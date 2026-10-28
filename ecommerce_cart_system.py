@@ -16,7 +16,10 @@ cart_items = {
 
 
 def add_item_to_cart(item_id, name, price, qty=1, audit_log=None):
-    """Add a new item to the cart. Return False if the item is already in it."""
+    """Add a new item to the cart.
+
+    Return False if the item is already in the cart.
+    """
     if item_id in cart_items:
         return False
     cart_items[item_id] = {"name": name, "price": price, "qty": qty}
@@ -69,7 +72,10 @@ def export_cart_receipt(filename="receipt.txt"):
     with open(filename, "w", encoding="utf-8") as receipt:
         for item_id, details in cart_items.items():
             line_total = details["price"] * details["qty"]
-            receipt.write(f"{item_id}  {details['name']}  x{details['qty']}  {line_total:.2f}\n")
+            receipt.write(
+                f"{item_id}  {details['name']}  "
+                f"x{details['qty']}  {line_total:.2f}\n"
+            )
         receipt.write(f"TOTAL  {calculate_cart_total(cart_items):.2f}\n")
     print("Receipt saved to:", filename)
 
@@ -90,7 +96,10 @@ def main():
     add_item_to_cart("ITEM4", "Monitor Stand", 35.0, 1, audit_log)
     remove_item_from_cart("ITEM2")
     print("Is ITEM1 in cart:", check_cart_status("ITEM1"))
-    print("Discounted total for ITEM1 (10% off):", calculate_discounted_total("ITEM1", 10))
+    print(
+        "Discounted total for ITEM1 (10% off):",
+        calculate_discounted_total("ITEM1", 10),
+    )
     print("Item Hash:", generate_item_hash("ITEM1"))
     print("Checkout PIN:", generate_checkout_pin())
     export_cart_receipt()
